@@ -21,7 +21,6 @@ typedef struct AppState {
 } AppState;
 
 void app_init();
-void command_manager(); // Maybe added in another file
 void app_run();
 
 #endif // !APP_H

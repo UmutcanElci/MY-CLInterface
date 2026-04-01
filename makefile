@@ -1,23 +1,22 @@
 TARGET = bin/cli
 IDIR = ./include
 CC = gcc
-CFLAGS = -I$(IDIR)
+CFLAGS = -I$(IDIR) -Wall
 LDLIBS = -lncurses
 
-SRCS = $(wildcard src/*.c) $(wildcard src/logger/*.c)
+SRCS = $(shell find src -name "*.c")
 
-OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
+OBJS = $(SRCS:src/%.c=obj/%.o)
 
 $(TARGET) : $(OBJS)
-			@mkdir -p $(@D)
-			$(CC) $^ -o $@ $(CFLAGS) $(LDLIBS)
+	@mkdir -p $(@D)
+	$(CC) $(OBJS) -o $@ $(LDLIBS)
 
 obj/%.o : src/%.c
-			@mkdir -p $(@D)
-			$(CC) $(CFLAGS) -c $< -o $@
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 
 clean:
-			rm -f $(OBJS) $(TARGET)
-			rm -rf obj bin
+	rm -rf obj bin
