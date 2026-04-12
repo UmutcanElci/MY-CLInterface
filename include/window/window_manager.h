@@ -24,7 +24,7 @@ void fourth_window_init(AppState *app);
 
 // handle input for each window...
 
-void draw_main_window(AppState *app);
+void draw_first_window(AppState *app);
 void draw_second_window(AppState *app);
 void draw_third_window(AppState *app);
 void draw_fourth_window(AppState *app);

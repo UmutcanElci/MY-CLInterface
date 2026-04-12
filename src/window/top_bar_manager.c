@@ -58,7 +58,7 @@ void draw_top_bar_win(AppState *app) {
 }
 void top_bar_win_init(AppState *app) {
   app->top_bar_win = (AppTopWindow){0};
-  app->top_bar_win.top_bar_win = newwin(3, COLS - 2, 1, 0);
+  app->top_bar_win.top_bar_win = newwin(3, COLS - 4, 1, 2);
 
   app->top_bar_win.draw = draw_top_bar_win;
 }
