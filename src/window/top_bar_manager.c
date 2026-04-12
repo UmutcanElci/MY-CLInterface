@@ -45,17 +45,16 @@ void draw_top_bar_win(AppState *app) {
   // init_pair(1, COLOR_BLACK, COLOR_WHITE); // Might add color manager...
 
   // wbkgd(app->top_bar_win.top_bar_win, COLOR_PAIR(1) | ' ');
-  box(app->top_bar_win.top_bar_win, 0, 0);
 
-  if (app->current_mode == NORMAL_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "NORMAL MODE");
-  } else if (app->current_mode == COMMAND_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "COMMAND MODE");
-  } else if (app->current_mode == WINDOW_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "WINDOW MODE");
-  }
+  WINDOW *top_bar_win = app->top_bar_win.top_bar_win;
 
-  wrefresh(app->top_bar_win.top_bar_win);
+  werase(top_bar_win);
+
+  draw_top_bar_left(app);
+  draw_top_bar_center(app);
+  draw_top_bar_right(app);
+
+  wrefresh(top_bar_win);
 }
 void top_bar_win_init(AppState *app) {
   app->top_bar_win = (AppTopWindow){0};

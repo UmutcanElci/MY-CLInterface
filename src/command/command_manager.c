@@ -27,7 +27,7 @@ void command_manager(AppState *app) {
              strncmp(app->command_buffer, "exit", 128) == 0) {
     app->is_running = 0;
   } else {
-    // Wrong
+    // Maybe show error in a panel....
   }
 
   app->command_buffer[0] = '\0';
