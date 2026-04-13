@@ -3,14 +3,14 @@
 #include "../include/window/window_manager.h"
 #include <locale.h>
 #include <ncurses.h>
+#include <string.h>
 
 void app_init() {
   noecho();
   raw();
-  cbreak();
+  keypad(stdscr, TRUE);
   curs_set(0);
   setlocale(LC_ALL, "");
-  start_color();
 }
 
 void app_run() {
@@ -22,40 +22,88 @@ void app_run() {
 
   top_bar_win_init(&app);
 
+  app.command_buffer[0] = '\0';
+
+  top_bar_win_init(&app);
+
+  first_window_init(&app);
+  second_window_init(&app);
+  third_window_init(&app);
+  fourth_window_init(&app);
+
   set_escdelay(25);
 
   timeout(5);
 
   app.is_running = 1;
 
+  refresh();
+
+  app.top_bar_win.draw(&app);
+
+  app.windows[0].config.active = 1;
+
+  apply_layout(&app);
+
   while (app.is_running) {
-    draw_top_bar_win(&app);
 
     ch = getch();
 
     if (ch == ERR) {
       continue;
     }
+
+    if (ch == KEY_RESIZE) {
+      top_bar_resize(&app);
+      apply_layout(&app);
+      continue;
+    }
+
     if (app.current_mode == NORMAL_MODE) {
       if (ch == 58) {
         app.current_mode = COMMAND_MODE;
+        app.top_bar_win.draw(&app);
         continue;
       }
     } else if (app.current_mode == COMMAND_MODE) {
       if (ch == 27) {
         app.current_mode = NORMAL_MODE;
-        refresh();
+        app.command_buffer[0] = '\0';
+        app.top_bar_win.draw(&app);
         continue;
+      } else if (ch == '\n' || ch == KEY_ENTER) {
+        command_manager(&app);
+      } else if (ch == KEY_BACKSPACE || ch == 127 || ch == '\b') {
+        int len = strnlen(app.command_buffer, 128);
+        if (len > 0) {
+          app.command_buffer[len - 1] = '\0';
+        }
+      } else {
+        int len = strnlen(app.command_buffer, 128);
+        if (len < sizeof(app.command_buffer) - 1) {
+          app.command_buffer[len] = (char)ch;
+          app.command_buffer[len + 1] = '\0';
+        }
+      }
+      app.top_bar_win.draw(&app);
+    } else if (app.current_mode == WINDOW_MODE) {
+      if (ch == 27) {
+        app.current_mode = NORMAL_MODE;
+        app.active_index = 0;
+        app.top_bar_win.draw(&app);
+      } else {
+        // input
       }
     }
 
     if (ch == 27) {
       app.current_mode = NORMAL_MODE;
+      app.top_bar_win.draw(&app);
       refresh();
       continue;
     }
 
-    if (ch == 'q') {
+    if (app.is_running == 0) {
       break;
     }
   }

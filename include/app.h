@@ -1,5 +1,6 @@
 #ifndef APP_H
 #define APP_H
+#include "../include/command/command_manager.h"
 #include "../include/window/top_bar_manager.h"
 #include "../include/window/window_manager.h"
 #include <ncurses.h>

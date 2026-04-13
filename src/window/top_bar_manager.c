@@ -50,6 +50,8 @@ void draw_top_bar_win(AppState *app) {
 
   werase(top_bar_win);
 
+  box(top_bar_win, 0, 0);
+
   draw_top_bar_left(app);
   draw_top_bar_center(app);
   draw_top_bar_right(app);

@@ -14,20 +14,51 @@ void command_manager(AppState *app) {
              strncmp(app->command_buffer, "window2", 128) == 0) {
     app->current_mode = WINDOW_MODE;
     app->active_index = 1;
+    app->windows[1].config.active = 1;
+    apply_layout(app);
   } else if (strncmp(app->command_buffer, "w3", 128) == 0 ||
              strncmp(app->command_buffer, "window3", 128) == 0) {
     app->current_mode = WINDOW_MODE;
     app->active_index = 2;
+    app->windows[2].config.active = 1;
+    apply_layout(app);
   } else if (strncmp(app->command_buffer, "w4", 128) == 0 ||
              strncmp(app->command_buffer, "window4", 128) == 0) {
     app->current_mode = WINDOW_MODE;
     app->active_index = 3;
+    app->windows[3].config.active = 1;
+    apply_layout(app);
+  } else if (strncmp(app->command_buffer, "c2", 128) == 0 ||
+             strncmp(app->command_buffer, "close2", 128) == 0) {
+    app->windows[1].config.active = 0;
+
+    if (app->active_index == 1) {
+      app->active_index = 0;
+    }
+    apply_layout(app);
+  } else if (strncmp(app->command_buffer, "c3", 128) == 0 ||
+             strncmp(app->command_buffer, "close3", 128) == 0) {
+    app->windows[2].config.active = 0;
+
+    if (app->active_index == 2) {
+      app->active_index = 0;
+    }
+    apply_layout(app);
+  } else if (strncmp(app->command_buffer, "c4", 128) == 0 ||
+             strncmp(app->command_buffer, "close4", 128) == 0) {
+    app->windows[3].config.active = 0;
+
+    if (app->active_index == 3) {
+      app->active_index = 0;
+    }
+    apply_layout(app);
   } else if (strncmp(app->command_buffer, "q", 128) == 0 ||
              strncmp(app->command_buffer, "quit", 128) == 0 ||
              strncmp(app->command_buffer, "exit", 128) == 0) {
     app->is_running = 0;
   } else {
     // Maybe show error in a panel....
+    app->current_mode = NORMAL_MODE;
   }
 
   app->command_buffer[0] = '\0';

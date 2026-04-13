@@ -1,5 +1,6 @@
 #include "../../include/window/window_manager.h"
 #include "../../include/app.h"
+#include <ncurses.h>
 #include <sys/types.h>
 
 /*
@@ -115,18 +116,18 @@ void apply_layout(AppState *app) {
   }
 }
 
-void main_window_init(AppState *app) {
+void first_window_init(AppState *app) {
   app->windows[0].draw = draw_first_window;
 }
 
-void first_window_init(AppState *app) {
+void second_window_init(AppState *app) {
   app->windows[1].draw = draw_second_window;
 }
 
-void second_window_init(AppState *app) {
+void third_window_init(AppState *app) {
   app->windows[2].draw = draw_third_window;
 }
-void third_window_init(AppState *app) {
+void fourth_window_init(AppState *app) {
   app->windows[3].draw = draw_fourth_window;
 }
 
