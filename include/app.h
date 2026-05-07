@@ -5,17 +5,25 @@
 #include "../include/window/window_manager.h"
 #include <ncurses.h>
 
-typedef enum { NORMAL_MODE, COMMAND_MODE, WINDOW_MODE } Mode;
+typedef enum {
+  NORMAL_MODE,
+  COMMAND_MODE,
+  WINDOW_MODE,
+  HELP_MODE,
+  MENU_MODE
+} Mode;
 
 typedef struct AppState {
   Mode current_mode;
   int is_running;
 
   AppTopWindow top_bar_win;
-  AppWindow windows[4]; // Also can be change...
+  AppWindow windows[4];
+  AppMenu app_menu;
 
   int win_index; // 0 is the main window - which is always
   int active_index;
+  int selected_window;
 
   char command_buffer[128];
 
