@@ -7,6 +7,9 @@ typedef struct {
   int x, y;
   int width, height;
   int active;
+  int occupied;
+  int focused;
+  int paused;
 } WindowConfig;
 
 typedef struct AppWindow {
@@ -22,7 +25,7 @@ void second_window_init(AppState *app);
 void third_window_init(AppState *app);
 void fourth_window_init(AppState *app);
 
-// handle input for each window...
+void main_window_handle_input(AppState *app, int ch);
 
 void draw_first_window(AppState *app);
 void draw_second_window(AppState *app);

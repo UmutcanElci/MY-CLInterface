@@ -1,6 +1,7 @@
 #include "../../include/command/command_manager.h"
 #include "../../include/app.h"
 #include "../../include/helper/string_helper.h"
+#include "../../include/window/theme/theme.h"
 #include <string.h>
 
 void command_manager(AppState *app) {
@@ -56,6 +57,20 @@ void command_manager(AppState *app) {
              strncmp(app->command_buffer, "quit", 128) == 0 ||
              strncmp(app->command_buffer, "exit", 128) == 0) {
     app->is_running = 0;
+  } else if (strncmp(app->command_buffer, "theme1", 128) == 0) {
+    theme_manager(0);
+  } else if (strncmp(app->command_buffer, "theme2", 128) == 0) {
+    theme_manager(1);
+  } else if (strncmp(app->command_buffer, "theme3", 128) == 0) {
+    theme_manager(2);
+  } else if (strncmp(app->command_buffer, "theme4", 128) == 0) {
+    theme_manager(3);
+  } else if (strncmp(app->command_buffer, "theme5", 128) == 0) {
+    theme_manager(4);
+  } else if (strncmp(app->command_buffer, "theme6", 128) == 0) {
+    theme_manager(5);
+  } else if (strncmp(app->command_buffer, "theme7", 128) == 0) {
+    theme_manager(6);
   } else {
     // Maybe show error in a panel....
     app->current_mode = NORMAL_MODE;

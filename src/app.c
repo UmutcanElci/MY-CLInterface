@@ -1,4 +1,5 @@
 #include "../include/app.h"
+#include "../include/window/theme/theme.h"
 #include "../include/window/top_bar_manager.h"
 #include "../include/window/window_manager.h"
 #include <locale.h>
@@ -15,10 +16,14 @@ void app_init() {
 
 void app_run() {
   app_init();
+  theme_init();
 
   AppState app = {0};
-
   int ch;
+
+  init_app_menu(&app);
+  init_help_panel(&app);
+  bkgd(COLOR_PAIR(PAIR_DESKTOP));
 
   top_bar_win_init(&app);
 
