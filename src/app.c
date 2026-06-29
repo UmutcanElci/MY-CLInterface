@@ -4,6 +4,7 @@
 #include "../include/window/window_manager.h"
 #include <locale.h>
 #include <ncurses.h>
+#include <panel.h>
 #include <string.h>
 
 void app_init() {
@@ -60,7 +61,16 @@ void app_run() {
 
     if (ch == KEY_RESIZE) {
       top_bar_resize(&app);
+
+      resize_app_menu(&app);
+      resize_help_panel(&app);
+
+      app.top_bar_win.draw(&app);
+
       apply_layout(&app);
+
+      update_panels();
+      doupdate();
       continue;
     }
 

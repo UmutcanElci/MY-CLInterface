@@ -17,7 +17,7 @@ typedef struct AppWindow {
   WINDOW *app_win;
 
   void (*handle_input)(struct AppState *app, int ch);
-  void (*draw)(struct AppState *app);
+  void (*draw)(struct AppState *app, int win_index);
 } AppWindow;
 
 void first_window_init(AppState *app); // Main window - always live

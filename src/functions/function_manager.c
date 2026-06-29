@@ -1,4 +1,6 @@
 #include "../../include/functions/function_manager.h"
+#include "../../include/functions/games/games.h"
+#include "../../include/functions/tools/tools.h"
 
 static MenuType active_menu = MENU_MAIN;
 

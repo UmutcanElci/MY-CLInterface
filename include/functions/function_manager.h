@@ -1,6 +1,10 @@
 #ifndef FUNCTION_MANAGER_H
 #define FUNCTION_MANAGER_H
 
+#include "../../include/app.h"
+#include "../../include/functions/games/games.h"
+#include "../../include/functions/tools/tools.h"
+
 typedef struct AppState AppState;
 
 typedef enum { MENU_MAIN, MENU_GAMES, MENU_TOOLS } MenuType;
@@ -17,9 +21,9 @@ const FunctionItem *get_main_menu(int *count);
 const FunctionItem *get_games_menu(int *count);
 const FunctionItem *get_tools_menu(int *count);
 
-const FunctionItem *get_menu_items(MenuType, int *count);
+const FunctionItem *get_menu_items(MenuType type, int *count);
 
 void set_active_menu(MenuType menu);
-void get_active_menu(void);
+MenuType get_active_menu(void);
 
 #endif // !FUNCTION_MANAGER_H
