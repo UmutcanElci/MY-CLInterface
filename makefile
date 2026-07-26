@@ -2,7 +2,7 @@ TARGET = bin/cli
 IDIR = ./include
 CC = gcc
 CFLAGS = -I$(IDIR) -Wall
-LDLIBS = -lncurses
+LDLIBS = -lpanel -lncurses
 
 SRCS = $(shell find src -name "*.c")
 

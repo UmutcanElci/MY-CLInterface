@@ -30,8 +30,6 @@ void app_run() {
 
   app.command_buffer[0] = '\0';
 
-  top_bar_win_init(&app);
-
   first_window_init(&app);
   second_window_init(&app);
   third_window_init(&app);
@@ -48,14 +46,32 @@ void app_run() {
   app.top_bar_win.draw(&app);
 
   app.windows[0].config.active = 1;
+  app.windows[0].config.occupied = 0;
 
+  app.top_bar_win.draw(&app);
   apply_layout(&app);
 
   while (app.is_running) {
-
+    for (int i = 0; i < 4; i++) {
+      if (app.windows[i].config.active) {
+        app.windows[i].config.paused =
+            (app.current_mode != WINDOW_MODE) || (app.active_index != i);
+      }
+    }
     ch = getch();
 
     if (ch == ERR) {
+      for (int i = 0; i < 4; i++) {
+        if (app.windows[i].config.active && app.windows[i].config.occupied) {
+          if (app.current_mode == MENU_MODE || app.current_mode == HELP_MODE) {
+            continue;
+          }
+          if (app.windows[i].draw != NULL) {
+            app.windows[i].draw(&app, i);
+          }
+        }
+      }
+
       continue;
     }
 
@@ -74,10 +90,28 @@ void app_run() {
       continue;
     }
 
-    if (app.current_mode == NORMAL_MODE) {
+    if (app.current_mode == MENU_MODE) {
+      menu_handle_input(&app, ch);
+      continue;
+    } else if (app.current_mode == HELP_MODE) {
+      hide_help_panel(&app);
+      app.current_mode = NORMAL_MODE;
+      app.top_bar_win.draw(&app);
+      apply_layout(&app);
+      continue;
+    } else if (app.current_mode == NORMAL_MODE) {
       if (ch == 58) {
         app.current_mode = COMMAND_MODE;
         app.top_bar_win.draw(&app);
+        continue;
+      } else if (ch == '?') {
+        app.current_mode = HELP_MODE;
+        show_help_panel(&app);
+        continue;
+      } else if (ch == 'm') {
+        app.current_mode = MENU_MODE;
+        app.app_menu.list.selected_index = 0;
+        show_app_menu(&app);
         continue;
       }
     } else if (app.current_mode == COMMAND_MODE) {
@@ -107,15 +141,10 @@ void app_run() {
         app.active_index = 0;
         app.top_bar_win.draw(&app);
       } else {
-        // input
+        if (app.windows[app.active_index].handle_input != NULL) {
+          app.windows[app.active_index].handle_input(&app, ch);
+        }
       }
-    }
-
-    if (ch == 27) {
-      app.current_mode = NORMAL_MODE;
-      app.top_bar_win.draw(&app);
-      refresh();
-      continue;
     }
 
     if (app.is_running == 0) {

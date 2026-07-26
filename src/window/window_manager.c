@@ -105,7 +105,7 @@ void apply_layout(AppState *app) {
       // wbkgd(app->windows[i].app_win, COLOR_PAIR(PAIR_WINDOW));
 
       if (app->windows[i].draw != NULL) {
-        app->windows[i].draw(app);
+        app->windows[i].draw(app, i);
       }
     } else {
       if (app->windows[i].app_win != NULL) {
@@ -117,34 +117,25 @@ void apply_layout(AppState *app) {
 }
 
 void first_window_init(AppState *app) {
-  app->windows[0].draw = draw_first_window;
+  app->windows[0].draw = draw_window;
+  app->windows[0].config.occupied = 0;
 }
 
 void second_window_init(AppState *app) {
-  app->windows[1].draw = draw_second_window;
+  app->windows[1].draw = draw_window;
+  app->windows[1].config.occupied = 0;
 }
 
 void third_window_init(AppState *app) {
-  app->windows[2].draw = draw_third_window;
+  app->windows[2].draw = draw_window;
+  app->windows[2].config.occupied = 0;
 }
 void fourth_window_init(AppState *app) {
-  app->windows[3].draw = draw_fourth_window;
+  app->windows[3].draw = draw_window;
+  app->windows[3].config.occupied = 0;
 }
 
-void draw_first_window(AppState *app) {
-  box(app->windows[0].app_win, 0, 0);
-  wrefresh(app->windows[0].app_win);
-}
-
-void draw_second_window(AppState *app) {
-  box(app->windows[1].app_win, 0, 0);
-  wrefresh(app->windows[1].app_win);
-}
-void draw_third_window(AppState *app) {
-  box(app->windows[2].app_win, 0, 0);
-  wrefresh(app->windows[2].app_win);
-}
-void draw_fourth_window(AppState *app) {
-  box(app->windows[3].app_win, 0, 0);
-  wrefresh(app->windows[3].app_win);
+void draw_window(AppState *app, int win_index) {
+  box(app->windows[win_index].app_win, 0, 0);
+  wrefresh(app->windows[win_index].app_win);
 }

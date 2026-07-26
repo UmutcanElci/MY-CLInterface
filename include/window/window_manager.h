@@ -25,16 +25,9 @@ void second_window_init(AppState *app);
 void third_window_init(AppState *app);
 void fourth_window_init(AppState *app);
 
-void main_window_handle_input(AppState *app, int ch);
-
-void draw_first_window(AppState *app);
-void draw_second_window(AppState *app);
-void draw_third_window(AppState *app);
-void draw_fourth_window(AppState *app);
+void draw_window(AppState *app, int win_index);
 
 void calculate_layout(AppState *app);
 void apply_layout(AppState *app);
-
-void delete_window(AppState *app);
 
 #endif // !WINDOW_MANAGER_H

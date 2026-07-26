@@ -24,6 +24,9 @@ typedef struct AppMenu {
 
   WINDOW *menu_window;
   PANEL *menu_panel;
+
+  MenuList list;
+
   int phase;
   int pending_selection;
 } AppMenu;

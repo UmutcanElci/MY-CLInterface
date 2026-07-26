@@ -36,7 +36,8 @@ static void draw_top_bar_right(AppState *app) {
 
   int status_text_len = strlen(status_text);
 
-  int right_x = COLS - status_text_len - 2;
+  int win_width = getmaxx(app->top_bar_win.top_bar_win);
+  int right_x = win_width - status_text_len - 2;
 
   mvwprintw(app->top_bar_win.top_bar_win, 1, right_x, "%s", status_text);
 }
@@ -66,8 +67,8 @@ void top_bar_win_init(AppState *app) {
 }
 
 void top_bar_resize(AppState *app) {
-  wresize(app->top_bar_win.top_bar_win, 3, COLS);
-  mvwin(app->top_bar_win.top_bar_win, 0, 0);
+  wresize(app->top_bar_win.top_bar_win, 3, COLS - 4);
+  mvwin(app->top_bar_win.top_bar_win, 1, 2);
 
   app->top_bar_win.draw(app);
 }
