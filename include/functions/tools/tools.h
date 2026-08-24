@@ -16,9 +16,9 @@ typedef struct {
 void tool_template_run(AppState *app, int selected_window);
 void draw_tool_template(AppState *app, int selected_window);
 
-static ToolItem tools[] = {{"Template Tool", 0, tool_template_run}};
+extern ToolItem tools[];
 
-#define TOOLS_COUNT (sizeof(tools) / sizeof(tools[0]))
+#define TOOLS_COUNT 1
 
 #endif // !TOOLS_H
        // place holder

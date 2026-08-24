@@ -1,6 +1,8 @@
 #include "../../../include/functions/tools/tools.h"
 #include <ncurses.h>
 
+ToolItem tools[] = {{"Template Tool", 0, tool_template_run, 0, NULL}};
+
 void tool_template_handle_input(AppState *app, int ch) {
   int win_idx = app->active_index;
   WINDOW *win = app->windows[win_idx].app_win;

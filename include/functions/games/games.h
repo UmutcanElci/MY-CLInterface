@@ -16,9 +16,9 @@ typedef struct {
 void game_template_run(AppState *app, int selected_window);
 void draw_game_template(AppState *app, int selected_window);
 
-static GameItem games[] = {{"Template Game", 0, game_template_run}};
+extern GameItem games[];
 
-#define GAMES_COUNT (sizeof(games) / sizeof(games[0]))
+#define GAMES_COUNT 1
 
 #endif // !GAMES_H
        // place holder

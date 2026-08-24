@@ -4,10 +4,10 @@
 #define PAIR_WINDOW 2
 #define PAIR_DESKTOP 3
 #define PAIR_WINDOW_BORDER 4 // will change with active inactive
-#define PAIR_INACTIVE_WINDOW_BORDER
-#define PAIR_ACTIVE_WINDOW_BORDER
-#define PAIR_TEXT_PRIMARY
-#define PAIR_TEXT_MUTED // Not sure
+#define PAIR_INACTIVE_WINDOW_BORDER 6
+#define PAIR_ACTIVE_WINDOW_BORDER 7
+#define PAIR_TEXT_PRIMARY 8
+#define PAIR_TEXT_MUTED 9 // Not sure
 
 #define RGB_CONVERT(val) ((val) * 1000 / 255)
 

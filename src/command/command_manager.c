@@ -15,6 +15,7 @@ void command_manager(AppState *app) {
     app->current_mode = WINDOW_MODE;
     app->active_index = 0;
     app->windows[0].config.focused = 1;
+    apply_layout(app);
   } else if (strncmp(app->command_buffer, "w2", 128) == 0 ||
              strncmp(app->command_buffer, "window2", 128) == 0) {
     for (int i = 0; i < 4; i++) {

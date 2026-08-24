@@ -1,6 +1,8 @@
 #include "../../../include/functions/games/games.h"
 #include <ncurses.h>
 
+GameItem games[] = {{"Template Game", 0, game_template_run, 0, NULL}};
+
 void game_template_handle_input(AppState *app, int ch) {
   int win_idx = app->active_index;
   WINDOW *win = app->windows[win_idx].app_win;

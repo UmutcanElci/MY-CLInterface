@@ -61,8 +61,11 @@ void app_run() {
     ch = getch();
 
     if (ch == ERR) {
+      if (app.current_mode != MENU_MODE && app.current_mode != HELP_MODE) {
+        app.top_bar_win.draw(&app);
+      }
       for (int i = 0; i < 4; i++) {
-        if (app.windows[i].config.active && app.windows[i].config.occupied) {
+        if (app.windows[i].config.active) {
           if (app.current_mode == MENU_MODE || app.current_mode == HELP_MODE) {
             continue;
           }
@@ -76,6 +79,9 @@ void app_run() {
     }
 
     if (ch == KEY_RESIZE) {
+      clear();
+      refresh();
+
       top_bar_resize(&app);
 
       resize_app_menu(&app);
@@ -112,6 +118,14 @@ void app_run() {
         app.current_mode = MENU_MODE;
         app.app_menu.list.selected_index = 0;
         show_app_menu(&app);
+        continue;
+      } else if (ch == '\t') {
+        int start = app.active_index;
+        do {
+          app.active_index = (app.active_index + 1) % 4;
+        } while (!app.windows[app.active_index].config.active &&
+                 app.active_index != start);
+        apply_layout(&app);
         continue;
       }
     } else if (app.current_mode == COMMAND_MODE) {

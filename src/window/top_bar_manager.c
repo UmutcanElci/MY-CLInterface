@@ -10,6 +10,10 @@ static void draw_top_bar_left(AppState *app) {
     mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ COMMAND ]");
   } else if (app->current_mode == WINDOW_MODE) {
     mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ WINDOW ]");
+  } else if (app->current_mode == MENU_MODE) {
+    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ MENU ]");
+  } else if (app->current_mode == HELP_MODE) {
+    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ HELP ]");
   }
 }
 
