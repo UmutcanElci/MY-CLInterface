@@ -136,6 +136,17 @@ void fourth_window_init(AppState *app) {
 }
 
 void draw_window(AppState *app, int win_index) {
-  box(app->windows[win_index].app_win, 0, 0);
-  wrefresh(app->windows[win_index].app_win);
+  WINDOW *win = app->windows[win_index].app_win;
+  int border_pair = (win_index == app->active_index)
+                        ? PAIR_ACTIVE_WINDOW_BORDER
+                        : PAIR_INACTIVE_WINDOW_BORDER;
+
+  wbkgd(win, COLOR_PAIR(PAIR_WINDOW));
+  werase(win);
+
+  wattron(win, COLOR_PAIR(border_pair));
+  box(win, 0, 0);
+  wattroff(win, COLOR_PAIR(border_pair));
+
+  wrefresh(win);
 }

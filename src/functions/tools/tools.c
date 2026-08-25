@@ -52,7 +52,13 @@ void draw_tool_template(AppState *app, int selected_window) {
   if (cur_x < 2)
     cur_x = 2;
 
-  wattron(win, COLOR_PAIR(PAIR_WINDOW_BORDER));
+  int border_pair = (selected_window == app->active_index)
+                        ? PAIR_ACTIVE_WINDOW_BORDER
+                        : PAIR_INACTIVE_WINDOW_BORDER;
+
+  wbkgd(win, COLOR_PAIR(PAIR_WINDOW));
+
+  wattron(win, COLOR_PAIR(border_pair));
   box(win, 0, 0);
 
   mvwprintw(win, 0, 2, "[ Tool Template ]");
@@ -60,7 +66,7 @@ void draw_tool_template(AppState *app, int selected_window) {
   const char *status =
       app->windows[selected_window].config.paused ? " PAUSED " : " ACTIVE ";
   mvwprintw(win, h - 1, w - 12, "[%s]", status);
-  wattroff(win, COLOR_PAIR(PAIR_WINDOW_BORDER));
+  wattroff(win, COLOR_PAIR(border_pair));
 
   // Restore cursor for input
   wmove(win, cur_y, cur_x);

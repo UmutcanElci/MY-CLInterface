@@ -1,6 +1,7 @@
 #include "../../include/window/top_bar_manager.h"
 #include "../../include/app.h"
 #include <ncurses.h>
+#include <stdio.h>
 #include <string.h>
 
 static void draw_top_bar_left(AppState *app) {
@@ -36,26 +37,30 @@ static void draw_top_bar_center(AppState *app) {
   }
 }
 static void draw_top_bar_right(AppState *app) {
-  char *status_text = "|status bar|";
+  char status_text[32];
+  snprintf(status_text, sizeof(status_text), "[ %s ]",
+           theme_name(theme_current()));
 
   int status_text_len = strlen(status_text);
 
   int win_width = getmaxx(app->top_bar_win.top_bar_win);
   int right_x = win_width - status_text_len - 2;
 
+  if (right_x < 2)
+    right_x = 2;
+
   mvwprintw(app->top_bar_win.top_bar_win, 1, right_x, "%s", status_text);
 }
 
 void draw_top_bar_win(AppState *app) {
-  // init_pair(1, COLOR_BLACK, COLOR_WHITE); // Might add color manager...
-
-  // wbkgd(app->top_bar_win.top_bar_win, COLOR_PAIR(1) | ' ');
-
   WINDOW *top_bar_win = app->top_bar_win.top_bar_win;
 
+  wbkgd(top_bar_win, COLOR_PAIR(PAIR_TOPBAR));
   werase(top_bar_win);
 
+  wattron(top_bar_win, COLOR_PAIR(PAIR_TOPBAR));
   box(top_bar_win, 0, 0);
+  wattroff(top_bar_win, COLOR_PAIR(PAIR_TOPBAR));
 
   draw_top_bar_left(app);
   draw_top_bar_center(app);

@@ -1,126 +1,160 @@
 #include "../../../include/window/theme/theme.h"
 #include <ncurses.h>
 
-static void apply_gruvbox(void) {
-  init_color(30, RGB_CONVERT(254), RGB_CONVERT(128), RGB_CONVERT(25));
-  init_color(31, RGB_CONVERT(40), RGB_CONVERT(40), RGB_CONVERT(40));
-  init_color(32, RGB_CONVERT(146), RGB_CONVERT(131), RGB_CONVERT(116));
-  init_color(33, RGB_CONVERT(235), RGB_CONVERT(219), RGB_CONVERT(211));
-  init_color(34, RGB_CONVERT(29), RGB_CONVERT(32), RGB_CONVERT(33));
+static Theme current_theme = GRUVBOX;
 
-  init_pair(1, 31, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+/*
+ * Each theme is described by 5 colors (RGB 0-255):
+ *   [0] accent      -> used for active borders / highlights
+ *   [1] background  -> base dark background
+ *   [2] border     -> muted border / muted text
+ *   [3] primary    -> primary (light) text
+ *   [4] surface    -> secondary background (panels)
+ */
+static void theme_apply(const short pal[5][3]) {
+  for (int i = 0; i < 5; i++) {
+    init_color(30 + i, RGB_CONVERT(pal[i][0]), RGB_CONVERT(pal[i][1]),
+               RGB_CONVERT(pal[i][2]));
+  }
+
+  init_pair(PAIR_TOPBAR, 33, 31);
+  init_pair(PAIR_WINDOW, 33, 31);
+  init_pair(PAIR_DESKTOP, 33, 31);
+  init_pair(PAIR_WINDOW_BORDER, 32, 31);
+  init_pair(PAIR_INACTIVE_WINDOW_BORDER, 32, 31);
+  init_pair(PAIR_ACTIVE_WINDOW_BORDER, 30, 31);
+  init_pair(PAIR_TEXT_PRIMARY, 33, 31);
+  init_pair(PAIR_TEXT_MUTED, 32, 31);
+}
+
+static void apply_gruvbox(void) {
+  static const short pal[5][3] = {
+      {254, 128, 25},  // accent
+      {40, 40, 40},    // background
+      {146, 131, 116}, // border / muted
+      {235, 219, 211}, // primary text
+      {29, 32, 33},    // surface
+  };
+  theme_apply(pal);
 }
 
 static void apply_nord(void) {
-  init_color(30, RGB_CONVERT(136), RGB_CONVERT(192), RGB_CONVERT(208));
-  init_color(31, RGB_CONVERT(46), RGB_CONVERT(52), RGB_CONVERT(64));
-  init_color(32, RGB_CONVERT(76), RGB_CONVERT(86), RGB_CONVERT(106));
-  init_color(33, RGB_CONVERT(216), RGB_CONVERT(222), RGB_CONVERT(233));
-  init_color(34, RGB_CONVERT(36), RGB_CONVERT(41), RGB_CONVERT(51));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {136, 192, 208}, // accent
+      {46, 52, 64},    // background
+      {76, 86, 106},   // border / muted
+      {216, 222, 233}, // primary text
+      {36, 41, 51},    // surface
+  };
+  theme_apply(pal);
 }
 
 static void apply_everforest(void) {
-  init_color(30, RGB_CONVERT(167), RGB_CONVERT(192), RGB_CONVERT(128));
-  init_color(31, RGB_CONVERT(43), RGB_CONVERT(51), RGB_CONVERT(57));
-  init_color(32, RGB_CONVERT(122), RGB_CONVERT(132), RGB_CONVERT(120));
-  init_color(33, RGB_CONVERT(211), RGB_CONVERT(198), RGB_CONVERT(170));
-  init_color(34, RGB_CONVERT(35), RGB_CONVERT(42), RGB_CONVERT(46));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {167, 192, 128}, // accent
+      {43, 51, 57},    // background
+      {122, 132, 120}, // border / muted
+      {211, 198, 170}, // primary text
+      {35, 42, 46},    // surface
+  };
+  theme_apply(pal);
 }
+
 static void apply_myth(void) {
-  init_color(30, RGB_CONVERT(222), RGB_CONVERT(222), RGB_CONVERT(222));
-  init_color(31, RGB_CONVERT(171), RGB_CONVERT(166), RGB_CONVERT(197));
-  init_color(32, RGB_CONVERT(119), RGB_CONVERT(118), RGB_CONVERT(150));
-  init_color(33, RGB_CONVERT(41), RGB_CONVERT(88), RGB_CONVERT(174));
-  init_color(34, RGB_CONVERT(20), RGB_CONVERT(49), RGB_CONVERT(97));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {222, 222, 222}, // accent
+      {171, 166, 197}, // background
+      {119, 118, 150}, // border / muted
+      {41, 88, 174},   // primary text
+      {20, 49, 97},    // surface
+  };
+  theme_apply(pal);
 }
+
 static void apply_woods(void) {
-  init_color(30, RGB_CONVERT(221), RGB_CONVERT(226), RGB_CONVERT(227));
-  init_color(31, RGB_CONVERT(154), RGB_CONVERT(172), RGB_CONVERT(184));
-  init_color(32, RGB_CONVERT(179), RGB_CONVERT(124), RGB_CONVERT(87));
-  init_color(33, RGB_CONVERT(60), RGB_CONVERT(69), RGB_CONVERT(92));
-  init_color(34, RGB_CONVERT(96), RGB_CONVERT(65), RGB_CONVERT(43));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {221, 226, 227}, // accent
+      {154, 172, 184}, // background
+      {179, 124, 87},  // border / muted
+      {60, 69, 92},    // primary text
+      {96, 65, 43},    // surface
+  };
+  theme_apply(pal);
 }
+
 static void apply_dreamy(void) {
-  init_color(30, RGB_CONVERT(25), RGB_CONVERT(38), RGB_CONVERT(82));
-  init_color(31, RGB_CONVERT(50), RGB_CONVERT(65), RGB_CONVERT(118));
-  init_color(32, RGB_CONVERT(66), RGB_CONVERT(85), RGB_CONVERT(152));
-  init_color(33, RGB_CONVERT(84), RGB_CONVERT(106), RGB_CONVERT(184));
-  init_color(34, RGB_CONVERT(96), RGB_CONVERT(120), RGB_CONVERT(205));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {25, 38, 82},    // accent
+      {50, 65, 118},   // background
+      {66, 85, 152},   // border / muted
+      {84, 106, 184},  // primary text
+      {96, 120, 205},  // surface
+  };
+  theme_apply(pal);
 }
+
 static void apply_race_red(void) {
-  init_color(30, RGB_CONVERT(103), RGB_CONVERT(9), RGB_CONVERT(22));
-  init_color(31, RGB_CONVERT(207), RGB_CONVERT(4), RGB_CONVERT(44));
-  init_color(32, RGB_CONVERT(240), RGB_CONVERT(120), RGB_CONVERT(28));
-  init_color(33, RGB_CONVERT(247), RGB_CONVERT(188), RGB_CONVERT(83));
-  init_color(34, RGB_CONVERT(233), RGB_CONVERT(225), RGB_CONVERT(185));
-
-  init_pair(1, 34, 30);
-  init_pair(2, 33, 31);
-  init_pair(3, 30, 31);
-  init_pair(4, 32, 31);
-  init_pair(5, 33, 34);
+  static const short pal[5][3] = {
+      {240, 120, 28},  // accent
+      {103, 9, 22},    // background
+      {247, 188, 83},  // border / muted
+      {233, 225, 185}, // primary text
+      {207, 4, 44},    // surface
+  };
+  theme_apply(pal);
 }
+
+static void (*const theme_appliers[])(void) = {
+    apply_gruvbox,   // 0  GRUVBOX
+    apply_nord,      // 1  NORD
+    apply_everforest,// 2  EVERFOREST
+    apply_myth,      // 3  MYTH
+    apply_woods,     // 4  WOODS
+    apply_dreamy,    // 5  DREAMY
+    apply_race_red,  // 6  RACE_RED
+};
+
 void theme_init() {
   start_color();
   use_default_colors();
 
   if (can_change_color()) {
-
-    theme_manager(0);
+    theme_manager(GRUVBOX);
   }
 }
 
 void theme_manager(Theme select) {
-  if (can_change_color()) {
-    if (select == GRUVBOX) {
-      apply_gruvbox();
-    } else if (select == EVERFOREST) {
-      apply_everforest();
-    } else if (select == NORD) {
-      apply_nord();
-    } else if (select == MYTH) {
-      apply_myth();
-    } else if (select == WOODS) {
-      apply_woods();
-    } else if (select == DREAMY) {
-      apply_dreamy();
-    } else if (select == RACE_RED) {
-      apply_race_red();
-    }
+  if (!can_change_color())
+    return;
+
+  int n = (int)(sizeof(theme_appliers) / sizeof(theme_appliers[0]));
+  if (select < 0 || select >= n)
+    return;
+
+  theme_appliers[select]();
+  current_theme = select;
+}
+
+Theme theme_current(void) { return current_theme; }
+
+const char *theme_name(Theme select) {
+  switch (select) {
+  case GRUVBOX:
+    return "Gruvbox";
+  case NORD:
+    return "Nord";
+  case EVERFOREST:
+    return "Everforest";
+  case MYTH:
+    return "Myth";
+  case WOODS:
+    return "Woods";
+  case DREAMY:
+    return "Dreamy";
+  case RACE_RED:
+    return "Race Red";
+  default:
+    return "Unknown";
   }
 }
 /// In menu this look like 3 seperate boxes with colors init to preview the

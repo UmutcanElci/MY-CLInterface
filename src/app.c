@@ -21,6 +21,7 @@ void app_run() {
 
   AppState app = {0};
   int ch;
+  int theme_seq = 0;
 
   init_app_menu(&app);
   init_help_panel(&app);
@@ -106,6 +107,24 @@ void app_run() {
       apply_layout(&app);
       continue;
     } else if (app.current_mode == NORMAL_MODE) {
+      if (theme_seq) {
+        theme_seq = 0;
+        if (ch >= '1' && ch <= '9') {
+          int idx = ch - '0' - 1;
+          if (idx < THEME_COUNT) {
+            theme_manager((Theme)idx);
+            bkgd(COLOR_PAIR(PAIR_DESKTOP));
+            app.top_bar_win.draw(&app);
+            apply_layout(&app);
+            refresh();
+          }
+        }
+        continue;
+      }
+      if (ch == 't' || ch == 'T') {
+        theme_seq = 1;
+        continue;
+      }
       if (ch == 58) {
         app.current_mode = COMMAND_MODE;
         app.top_bar_win.draw(&app);
