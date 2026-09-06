@@ -34,6 +34,9 @@ void draw_app_menu(AppState *app) {
   MenuConfig *cfg = &app->app_menu.config;
   WINDOW *win = app->app_menu.menu_window;
 
+  if (win == NULL)
+    return;
+
   werase(win);
 
   MenuType active = get_active_menu();
@@ -133,6 +136,9 @@ void show_app_menu(AppState *app) {
 
   MenuConfig *cfg = &app->app_menu.config;
 
+  if (app->app_menu.menu_panel == NULL || app->app_menu.menu_window == NULL)
+    return;
+
   show_panel(app->app_menu.menu_panel);
   top_panel(app->app_menu.menu_panel);
   cfg->is_active = 1;
@@ -143,7 +149,9 @@ void show_app_menu(AppState *app) {
 void hide_app_menu(AppState *app) {
   MenuConfig *cfg = &app->app_menu.config;
 
-  hide_panel(app->app_menu.menu_panel);
+  if (app->app_menu.menu_panel != NULL) {
+    hide_panel(app->app_menu.menu_panel);
+  }
   cfg->is_active = 0;
 
   set_active_menu(MENU_MAIN);
@@ -154,17 +162,22 @@ void hide_app_menu(AppState *app) {
   doupdate();
 }
 
+void cleanup_app_menu(AppState *app) {
+  if (app->app_menu.menu_panel) {
+    del_panel(app->app_menu.menu_panel);
+    app->app_menu.menu_panel = NULL;
+  }
+  if (app->app_menu.menu_window) {
+    delwin(app->app_menu.menu_window);
+    app->app_menu.menu_window = NULL;
+  }
+}
+
 void resize_app_menu(AppState *app) {
   MenuConfig *cfg = &app->app_menu.config;
   int was_active = cfg->is_active;
 
-  if (app->app_menu.menu_panel) {
-    del_panel(app->app_menu.menu_panel);
-  }
-  if (app->app_menu.menu_window) {
-    delwin(app->app_menu.menu_window);
-  }
-
+  cleanup_app_menu(app);
   init_app_menu(app);
 
   if (was_active) {

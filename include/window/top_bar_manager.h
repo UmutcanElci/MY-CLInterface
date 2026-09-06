@@ -14,4 +14,6 @@ void top_bar_win_init(AppState *app);
 void draw_top_bar_win(AppState *app);
 
 void top_bar_resize(AppState *app);
+
+void top_bar_cleanup(AppState *app);
 #endif // !TOP_BAR_MANAGER_H

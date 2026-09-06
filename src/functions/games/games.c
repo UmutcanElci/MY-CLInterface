@@ -7,6 +7,10 @@ void game_template_handle_input(AppState *app, int ch) {
   int win_idx = app->active_index;
   WINDOW *win = app->windows[win_idx].app_win;
   int y, x, h, w;
+
+  if (win == NULL)
+    return;
+
   getmaxyx(win, h, w);
   getyx(win, y, x);
 
@@ -43,6 +47,10 @@ void game_template_run(AppState *app, int selected_win) {
 void draw_game_template(AppState *app, int selected_window) {
   WINDOW *win = app->windows[selected_window].app_win;
   int h, w, cur_y, cur_x;
+
+  if (win == NULL)
+    return;
+
   getmaxyx(win, h, w);
   getyx(win, cur_y, cur_x);
 

@@ -18,6 +18,7 @@ const FunctionItem *get_games_menu(int *count) {
     items[i].name = games[i].name;
     items[i].sub_menu = MENU_MAIN;
     items[i].action = games[i].action;
+    items[i].handle_input = games[i].handle_input;
   }
   *count = GAMES_COUNT;
   return items;
@@ -29,6 +30,7 @@ const FunctionItem *get_tools_menu(int *count) {
     items[i].name = tools[i].name;
     items[i].sub_menu = MENU_MAIN;
     items[i].action = tools[i].action;
+    items[i].handle_input = tools[i].handle_input;
   }
   *count = TOOLS_COUNT;
   return items;

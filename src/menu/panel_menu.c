@@ -26,6 +26,9 @@ void draw_help_window(AppState *app) {
   HelpConfig *cfg = &app->help_menu.config;
   WINDOW *win = app->help_menu.help_win;
 
+  if (win == NULL)
+    return;
+
   werase(win);
 
   if (LINES < cfg->height || COLS < cfg->width) {
@@ -52,6 +55,9 @@ void draw_help_window(AppState *app) {
 void show_help_panel(AppState *app) {
   HelpConfig *cfg = &app->help_menu.config;
 
+  if (app->help_menu.help_panel == NULL || app->help_menu.help_win == NULL)
+    return;
+
   show_panel(app->help_menu.help_panel);
   top_panel(app->help_menu.help_panel);
   cfg->is_active = 1;
@@ -62,23 +68,30 @@ void show_help_panel(AppState *app) {
 void hide_help_panel(AppState *app) {
   HelpConfig *cfg = &app->help_menu.config;
 
-  hide_panel(app->help_menu.help_panel);
+  if (app->help_menu.help_panel != NULL) {
+    hide_panel(app->help_menu.help_panel);
+    update_panels();
+    doupdate();
+  }
   cfg->is_active = 0;
-  update_panels();
-  doupdate();
+}
+
+void cleanup_help_panel(AppState *app) {
+  if (app->help_menu.help_panel) {
+    del_panel(app->help_menu.help_panel);
+    app->help_menu.help_panel = NULL;
+  }
+  if (app->help_menu.help_win) {
+    delwin(app->help_menu.help_win);
+    app->help_menu.help_win = NULL;
+  }
 }
 
 void resize_help_panel(AppState *app) {
   HelpConfig *cfg = &app->help_menu.config;
   int was_active = cfg->is_active;
 
-  if (app->help_menu.help_panel) {
-    del_panel(app->help_menu.help_panel);
-  }
-  if (app->help_menu.help_win) {
-    delwin(app->help_menu.help_win);
-  }
-
+  cleanup_help_panel(app);
   init_help_panel(app);
 
   if (was_active) {

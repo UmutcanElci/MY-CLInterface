@@ -46,30 +46,20 @@ void command_manager(AppState *app) {
     app->windows[3].config.active = 1;
     app->windows[3].config.focused = 1;
     apply_layout(app);
+  } else if (strncmp(app->command_buffer, "c1", 128) == 0 ||
+             strncmp(app->command_buffer, "close1", 128) == 0 ||
+             strncmp(app->command_buffer, "clear1", 128) == 0) {
+    window_reset(app, 0);
+    apply_layout(app);
   } else if (strncmp(app->command_buffer, "c2", 128) == 0 ||
              strncmp(app->command_buffer, "close2", 128) == 0) {
-    app->windows[1].config.active = 0;
-
-    if (app->active_index == 1) {
-      app->active_index = 0;
-    }
-    apply_layout(app);
+    window_close(app, 1);
   } else if (strncmp(app->command_buffer, "c3", 128) == 0 ||
              strncmp(app->command_buffer, "close3", 128) == 0) {
-    app->windows[2].config.active = 0;
-
-    if (app->active_index == 2) {
-      app->active_index = 0;
-    }
-    apply_layout(app);
+    window_close(app, 2);
   } else if (strncmp(app->command_buffer, "c4", 128) == 0 ||
              strncmp(app->command_buffer, "close4", 128) == 0) {
-    app->windows[3].config.active = 0;
-
-    if (app->active_index == 3) {
-      app->active_index = 0;
-    }
-    apply_layout(app);
+    window_close(app, 3);
   } else if (strncmp(app->command_buffer, "q", 128) == 0 ||
              strncmp(app->command_buffer, "quit", 128) == 0 ||
              strncmp(app->command_buffer, "exit", 128) == 0) {

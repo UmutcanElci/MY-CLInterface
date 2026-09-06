@@ -53,12 +53,6 @@ void app_run() {
   apply_layout(&app);
 
   while (app.is_running) {
-    for (int i = 0; i < 4; i++) {
-      if (app.windows[i].config.active) {
-        app.windows[i].config.paused =
-            (app.current_mode != WINDOW_MODE) || (app.active_index != i);
-      }
-    }
     ch = getch();
 
     if (ch == ERR) {
@@ -184,4 +178,16 @@ void app_run() {
       break;
     }
   }
+
+  app_cleanup(&app);
+}
+
+void app_cleanup(AppState *app) {
+  for (int i = 0; i < 4; i++) {
+    window_close(app, i);
+  }
+
+  cleanup_app_menu(app);
+  cleanup_help_panel(app);
+  top_bar_cleanup(app);
 }

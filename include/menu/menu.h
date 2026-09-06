@@ -36,6 +36,7 @@ void draw_app_menu(AppState *app);
 void show_app_menu(AppState *app);
 void hide_app_menu(AppState *app);
 void resize_app_menu(AppState *app);
+void cleanup_app_menu(AppState *app);
 void menu_handle_input(AppState *app, int ch);
 
 #endif // !MENU_H

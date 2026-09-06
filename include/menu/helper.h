@@ -22,5 +22,6 @@ void draw_help_window(AppState *app);
 void show_help_panel(AppState *app);
 void hide_help_panel(AppState *app);
 void resize_help_panel(AppState *app);
+void cleanup_help_panel(AppState *app);
 
 #endif

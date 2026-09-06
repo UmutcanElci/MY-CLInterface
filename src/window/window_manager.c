@@ -118,21 +118,72 @@ void apply_layout(AppState *app) {
 
 void first_window_init(AppState *app) {
   app->windows[0].draw = draw_window;
+  app->windows[0].handle_input = NULL;
+  app->windows[0].cleanup = NULL;
+  app->windows[0].instance_data = NULL;
   app->windows[0].config.occupied = 0;
 }
 
 void second_window_init(AppState *app) {
   app->windows[1].draw = draw_window;
+  app->windows[1].handle_input = NULL;
+  app->windows[1].cleanup = NULL;
+  app->windows[1].instance_data = NULL;
   app->windows[1].config.occupied = 0;
 }
 
 void third_window_init(AppState *app) {
   app->windows[2].draw = draw_window;
+  app->windows[2].handle_input = NULL;
+  app->windows[2].cleanup = NULL;
+  app->windows[2].instance_data = NULL;
   app->windows[2].config.occupied = 0;
 }
+
 void fourth_window_init(AppState *app) {
   app->windows[3].draw = draw_window;
+  app->windows[3].handle_input = NULL;
+  app->windows[3].cleanup = NULL;
+  app->windows[3].instance_data = NULL;
   app->windows[3].config.occupied = 0;
+}
+
+void window_reset(AppState *app, int win_index) {
+  if (win_index < 0 || win_index >= 4)
+    return;
+
+  if (app->windows[win_index].cleanup != NULL) {
+    app->windows[win_index].cleanup(app, win_index);
+  }
+
+  app->windows[win_index].instance_data = NULL;
+  app->windows[win_index].handle_input = NULL;
+  app->windows[win_index].draw = draw_window;
+  app->windows[win_index].cleanup = NULL;
+  app->windows[win_index].config.occupied = 0;
+  app->windows[win_index].config.paused = 0;
+}
+
+void window_close(AppState *app, int win_index) {
+  if (win_index < 0 || win_index >= 4)
+    return;
+
+  window_reset(app, win_index);
+
+  if (win_index != 0) {
+    app->windows[win_index].config.active = 0;
+    app->windows[win_index].config.focused = 0;
+    if (app->windows[win_index].app_win != NULL) {
+      delwin(app->windows[win_index].app_win);
+      app->windows[win_index].app_win = NULL;
+    }
+  }
+
+  if (app->active_index == win_index) {
+    app->active_index = 0;
+  }
+
+  apply_layout(app);
 }
 
 void draw_window(AppState *app, int win_index) {
@@ -140,6 +191,9 @@ void draw_window(AppState *app, int win_index) {
   int border_pair = (win_index == app->active_index)
                         ? PAIR_ACTIVE_WINDOW_BORDER
                         : PAIR_INACTIVE_WINDOW_BORDER;
+
+  if (win == NULL)
+    return;
 
   wbkgd(win, COLOR_PAIR(PAIR_WINDOW));
   werase(win);

@@ -15,15 +15,20 @@ typedef struct {
 typedef struct AppWindow {
   WindowConfig config;
   WINDOW *app_win;
+  void *instance_data;
 
   void (*handle_input)(struct AppState *app, int ch);
   void (*draw)(struct AppState *app, int win_index);
+  void (*cleanup)(struct AppState *app, int win_index);
 } AppWindow;
 
 void first_window_init(AppState *app); // Main window - always live
 void second_window_init(AppState *app);
 void third_window_init(AppState *app);
 void fourth_window_init(AppState *app);
+
+void window_reset(AppState *app, int win_index);
+void window_close(AppState *app, int win_index);
 
 void draw_window(AppState *app, int win_index);
 

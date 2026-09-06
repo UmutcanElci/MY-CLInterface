@@ -34,6 +34,7 @@ typedef struct AppState {
 } AppState;
 
 void app_init();
+void app_cleanup(AppState *app);
 void app_run();
 
 #endif // !APP_H
