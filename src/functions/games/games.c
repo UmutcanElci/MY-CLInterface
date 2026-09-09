@@ -36,6 +36,7 @@ void game_template_handle_input(AppState *app, int ch) {
 
 void game_template_run(AppState *app, int selected_win) {
   app->windows[selected_win].config.occupied = 1;
+  app->windows[selected_win].config.paused = 0;
   app->windows[selected_win].draw = draw_game_template;
   app->windows[selected_win].handle_input = game_template_handle_input;
 
@@ -75,6 +76,11 @@ void draw_game_template(AppState *app, int selected_window) {
       app->windows[selected_window].config.paused ? " PAUSED " : " ACTIVE ";
   mvwprintw(win, h - 1, w - 12, "[%s]", status);
   wattroff(win, COLOR_PAIR(border_pair));
+
+  if (app->windows[selected_window].config.paused) {
+    mvwprintw(win, 1, 2, "( paused - resume: :w%d | close: :c%d )",
+              selected_window + 1, selected_window + 1);
+  }
 
   // Restore cursor for input at protected coordinates
   wmove(win, cur_y, cur_x);

@@ -8,7 +8,6 @@ typedef struct {
   int width, height;
   int active;
   int occupied;
-  int focused;
   int paused;
 } WindowConfig;
 
@@ -29,6 +28,9 @@ void fourth_window_init(AppState *app);
 
 void window_reset(AppState *app, int win_index);
 void window_close(AppState *app, int win_index);
+
+void window_pause(AppState *app, int win_index);
+void window_resume(AppState *app, int win_index);
 
 void draw_window(AppState *app, int win_index);
 

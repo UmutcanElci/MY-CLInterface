@@ -140,6 +140,11 @@ void app_run() {
                  app.active_index != start);
         apply_layout(&app);
         continue;
+      } else if (ch == '\n' || ch == KEY_ENTER || ch == ' ') {
+        window_resume(&app, app.active_index);
+        app.current_mode = WINDOW_MODE;
+        app.top_bar_win.draw(&app);
+        continue;
       }
     } else if (app.current_mode == COMMAND_MODE) {
       if (ch == 27) {
@@ -164,8 +169,8 @@ void app_run() {
       app.top_bar_win.draw(&app);
     } else if (app.current_mode == WINDOW_MODE) {
       if (ch == 27) {
+        window_pause(&app, app.active_index);
         app.current_mode = NORMAL_MODE;
-        app.active_index = 0;
         app.top_bar_win.draw(&app);
       } else {
         if (app.windows[app.active_index].handle_input != NULL) {

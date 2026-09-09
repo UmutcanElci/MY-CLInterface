@@ -97,7 +97,6 @@ void apply_layout(AppState *app) {
             newwin(cfg->height, cfg->width, cfg->y, cfg->x);
       } else {
         refresh();
-        werase(app->windows[i].app_win);
         wresize(app->windows[i].app_win, cfg->height, cfg->width);
         mvwin(app->windows[i].app_win, cfg->y, cfg->x);
         wrefresh(app->windows[i].app_win);
@@ -172,7 +171,6 @@ void window_close(AppState *app, int win_index) {
 
   if (win_index != 0) {
     app->windows[win_index].config.active = 0;
-    app->windows[win_index].config.focused = 0;
     if (app->windows[win_index].app_win != NULL) {
       delwin(app->windows[win_index].app_win);
       app->windows[win_index].app_win = NULL;
@@ -184,6 +182,23 @@ void window_close(AppState *app, int win_index) {
   }
 
   apply_layout(app);
+}
+
+void window_pause(AppState *app, int win_index) {
+  if (win_index < 0 || win_index >= 4)
+    return;
+
+  if (app->windows[win_index].config.occupied &&
+      app->windows[win_index].config.active) {
+    app->windows[win_index].config.paused = 1;
+  }
+}
+
+void window_resume(AppState *app, int win_index) {
+  if (win_index < 0 || win_index >= 4)
+    return;
+
+  app->windows[win_index].config.paused = 0;
 }
 
 void draw_window(AppState *app, int win_index) {

@@ -6,7 +6,7 @@
 void init_help_panel(AppState *app) {
   HelpConfig *cfg = &app->help_menu.config;
 
-  cfg->height = 10;
+  cfg->height = 14;
   cfg->width = 45;
   cfg->y = (LINES - cfg->height) / 2;
   cfg->x = (COLS - cfg->width) / 2;
@@ -45,7 +45,11 @@ void draw_help_window(AppState *app) {
     mvwprintw(win, 4, 4, "[?]     : Toggle this help panel");
     mvwprintw(win, 5, 4, "[m]     : Open General Menu");
     mvwprintw(win, 6, 4, "[TAB]   : Cycle window focus");
-    mvwprintw(win, 7, 4, "[:q]    : Quit");
+    mvwprintw(win, 7, 4, "[ENTER] : Activate focused window");
+    mvwprintw(win, 8, 4, "[SPACE] : Activate focused window");
+    mvwprintw(win, 9, 4, "[ESC]   : Leave window (pause)");
+    mvwprintw(win, 10, 4, "[:w#]   : Activate window via command");
+    mvwprintw(win, 11, 4, "[:q]    : Quit");
   }
 
   update_panels();

@@ -5,16 +5,30 @@
 #include <string.h>
 
 static void draw_top_bar_left(AppState *app) {
+  const char *mode = "NORMAL";
   if (app->current_mode == NORMAL_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ NORMAL ]");
+    mode = "NORMAL";
   } else if (app->current_mode == COMMAND_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ COMMAND ]");
+    mode = "COMMAND";
   } else if (app->current_mode == WINDOW_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ WINDOW ]");
+    mode = "WINDOW";
   } else if (app->current_mode == MENU_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ MENU ]");
+    mode = "MENU";
   } else if (app->current_mode == HELP_MODE) {
-    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ HELP ]");
+    mode = "HELP";
+  }
+
+  if (app->current_mode == NORMAL_MODE || app->current_mode == WINDOW_MODE) {
+    int win_num = app->active_index + 1;
+    if (COLS >= TOP_BAR_FULL_WINDOW_LABEL_THRESHOLD) {
+      mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ %s ] [window %d]",
+                mode, win_num);
+    } else {
+      mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ %s ] [w%d]", mode,
+                win_num);
+    }
+  } else {
+    mvwprintw(app->top_bar_win.top_bar_win, 1, 2, "[ %s ]", mode);
   }
 }
 
